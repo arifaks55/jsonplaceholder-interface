@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import UsersList, { loader as usersLoader } from './pages/UsersList';
+import UserDetail from './pages/UserDetail';
+import PostDetail from './pages/PostDetail';
+import Favorites from './pages/Favorites';
+import Layout from './components/Layout';
+
+// createBrowserRouter kullanarak router yapılandırıyoruz
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Layout />,
+    children: [
+      {
+        index: true,
+        element: <UsersList />,
+        loader: usersLoader, // Loader'ı burada belirtiyoruz
+      },
+      {
+        path: 'users/:userId',
+        element: <UserDetail />,
+      },
+      {
+        path: 'users/:userId/posts/:postId',
+        element: <PostDetail />,
+      },
+      {
+        path: 'favorites',
+        element: <Favorites />,
+      },
+    ],
+  },
+]);
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  return <RouterProvider router={router} />; // RouterProvider ile uygulamanın root'u sağlanır
 }
 
 export default App;
